@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Header from "./components/Header";
+import Input from "./components/Input";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Todo from "./components/Todo";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+
+state = {
+  todos: []
+};
+
+add = (todo) => {
+  this.setState((prevState) => {
+    return [...prevState.todos, todo]
+  });
+  this.state.todos.push(todo);
 }
 
+delete = (id) => {
+ this.setState(prevState => {
+   return prevState.todos.filter((todo, index) => {
+      return index !== id;
+    });
+ });
+}
+
+ render (){
+   return (
+    <div>
+    <Header />
+    <Input onAdd={ this.add}/>
+    {this.state.todos.map((todo, index) => {
+    return ( 
+      <Todo key={index} name={todo} id={index} onDelete={this.delete}/>); 
+    })
+    }
+  </div>
+   );
+ }
+
+}
 export default App;
